@@ -1,12 +1,18 @@
 const express = require('express');
+const mongoose = require('mongoose')
+
 const app = express();
 const ejs = require('ejs')
 
+mongoose.connect('mongodb://localhost/cleanblog-test-db');
+
 // TEMPLATE ENGINE
-app.set("view engine", "ejs")
+app.set('view engine', 'ejs');
 
 // MIDDLEWARE
-app.use(express.static('public'))
+app.use(express.static('public'));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 // ROUTES
 app.get('/', (req, res) => {
