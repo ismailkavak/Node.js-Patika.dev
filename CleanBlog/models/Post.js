@@ -3,8 +3,8 @@ const Schema = mongoose.Schema
 
 // Create model
 const postSchema = new Schema({
-    post : String,
-    description : String,
+    title : String,
+    detail : String,
     dateCreated : {
         type : Date,
         default : Date.now
