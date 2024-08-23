@@ -60,6 +60,14 @@ app.get('/posts/edit/:id', async (req, res) => {
   })
 })
 
+app.put('/posts/:id', async(req, res) => {
+  const post = await Post.findOne({ _id : req.params.id})
+  post.title = req.body.title
+  post.detail = req.body.detail
+  post.save()
+  res.redirect(`/posts/${req.params.id}`);
+})
+
 const port = 4000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}.`);
