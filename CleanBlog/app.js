@@ -1,10 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const methodOverride = require('method-override')
+const methodOverride = require('method-override');
 const app = express();
 const ejs = require('ejs');
 const Post = require('./models/Post');
-
+const postController = require('./controller/postControllers');
+const pageController = require('./controller/pageController');
 
 mongoose.connect('mongodb://localhost/cleanblog-test-db');
 
@@ -20,62 +21,18 @@ app.use(
     methods: ['POST', 'GET'],
   })
 );
-
 // ROUTES
-app.get('/', async (req, res) => {
-  const posts = await Post.find({});
-  res.render('index', {
-    posts,
-  });
-});
+app.get('/', postController.getAllPosts);
+app.get('/posts/:id', postController.getPost);
+app.post('/posts', postController.createPost);
+app.put('/posts/:id', postController.updatePost);
+app.delete('/posts/:id', postController.deletePost);
 
-app.get('/posts/:id', async (req, res) => {
-  const post = await Post.findById(req.params.id);
-  res.render('post', {
-    post,
-  });
-});
-
-app.get('/index', (req, res) => {
-  res.redirect('/');
-});
-
-app.get('/about', (req, res) => {
-  res.render('about');
-});
-
-app.get('/post', (req, res) => {
-  res.render('post');
-});
-
-app.get('/add_post', (req, res) => {
-  res.render('add_post');
-});
-
-app.post('/posts', async (req, res) => {
-  await Post.create(req.body);
-  res.redirect('/');
-});
-
-app.get('/posts/edit/:id', async (req, res) => {
-  const post = await Post.findOne({ _id : req.params.id})
-  res.render('edit', {
-    post
-  })
-})
-
-app.put('/posts/:id', async(req, res) => {
-  const post = await Post.findOne({ _id : req.params.id})
-  post.title = req.body.title
-  post.detail = req.body.detail
-  post.save()
-  res.redirect(`/posts/${req.params.id}`);
-})
-
-app.delete('/posts/:id', async(req, res) => {
-  await Post.findByIdAndDelete({_id : req.params.id})
-  res.redirect('/')
-})
+app.get('/index', pageController.indexPage);
+app.get('/about', pageController.aboutPage);
+app.get('/post', pageController.postPage);
+app.get('/add_post', pageController.addPostPage);
+app.get('/posts/edit/:id', pageController.editPage);
 
 const port = 4000;
 app.listen(port, () => {
