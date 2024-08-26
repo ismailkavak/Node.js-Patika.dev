@@ -17,7 +17,7 @@
               <a href="#">Start Bootstrap</a>
               <%= post.dateCreated %> </span>
               <a class="btn" href="/posts/edit/<%= post._id%>">EDIT</a>
-              <a class="btn" onclick="return confirm('Are you sure ?')" href="">DELETE</a>
+              <a class="btn" onclick="return confirm('Are you sure ?')" href="/posts/<%= post._id %>?_method=DELETE">DELETE</a>
           </div>
         </div>
       </div>
