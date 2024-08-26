@@ -7,7 +7,12 @@ const Post = require('./models/Post');
 const postController = require('./controller/postControllers');
 const pageController = require('./controller/pageController');
 
-mongoose.connect('mongodb://localhost/cleanblog-test-db');
+mongoose.connect('mongodb+srv://poyraz:PtuB19QLoN0vVNjD@cluster0.aavsy.mongodb.net/')
+.then(() => {
+  console.log("DB CONNECTED!")
+}).catch((err) => {
+  console.log("FAILED CONNECT!")
+});
 
 // TEMPLATE ENGINE
 app.set('view engine', 'ejs');
@@ -34,7 +39,7 @@ app.get('/post', pageController.postPage);
 app.get('/add_post', pageController.addPostPage);
 app.get('/posts/edit/:id', pageController.editPage);
 
-const port = 4000;
+const port = process.env.PORT || 4000
 app.listen(port, () => {
   console.log(`Server is running on port ${port}.`);
 });
